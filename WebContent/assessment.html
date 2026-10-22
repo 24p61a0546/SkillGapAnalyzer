@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skill Assessment | Skill Gap Analyzer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/global.css">
+  <link rel="stylesheet" href="assets/css/assessment.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="dashboard.html" class="brand-logo">
+        <div class="brand-icon"><i class="fas fa-chart-line"></i></div>
+        <span>SkillGap<span style="color: var(--primary);">Analyzer</span></span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="dashboard.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+        <li><a href="roles.html" class="nav-link"><i class="fas fa-briefcase"></i> Job Roles</a></li>
+        <li><a href="assessment.html" class="nav-link active"><i class="fas fa-tasks"></i> Assessment</a></li>
+        <li><a href="analysis.html" class="nav-link"><i class="fas fa-radar"></i> Gap Analysis</a></li>
+        <li><a href="recommendations.html" class="nav-link"><i class="fas fa-graduation-cap"></i> Roadmaps</a></li>
+      </ul>
+
+      <div class="nav-auth">
+        <a href="dashboard.html" class="btn btn-secondary btn-sm"><i class="fas fa-tachometer-alt"></i> Portal</a>
+        <button onclick="API.logout()" class="btn btn-secondary btn-sm"><i class="fas fa-sign-out-alt"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Technical Skill Self-Assessment</h1>
+        <p class="page-subtitle">Rate your genuine proficiency levels from 1 (Novice) to 5 (Expert) across the technical matrix.</p>
+      </div>
+      <a href="roles.html" class="btn btn-outline btn-sm"><i class="fas fa-bullseye"></i> View Target Benchmarks</a>
+    </div>
+
+    <!-- Rating Rubric Legend Box -->
+    <div class="card" style="margin-bottom: 2rem; background: var(--slate-50); border-left: 4px solid var(--primary);">
+      <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--dark-900);">
+        <i class="fas fa-info-circle" style="color: var(--primary);"></i> Proficiency Scoring Rubric
+      </h4>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem; font-size: 0.85rem; color: var(--slate-600);">
+        <div><strong>1 - Novice:</strong> Theoretical awareness, no hands-on project yet.</div>
+        <div><strong>2 - Beginner:</strong> Can write simple code with documentation/tutorials.</div>
+        <div><strong>3 - Competent:</strong> Can independently build features and solve common bugs.</div>
+        <div><strong>4 - Proficient:</strong> Thorough understanding of best practices, architectures & internals.</div>
+        <div><strong>5 - Expert:</strong> Can optimize systems, lead architectural decisions and mentor others.</div>
+      </div>
+    </div>
+
+    <!-- Category Filter Tabs -->
+    <div id="categoryTabs" class="assessment-tabs">
+      <!-- Injected by assessment.js -->
+    </div>
+
+    <!-- Skills List Container -->
+    <div id="skillsContainer" class="skills-matrix-list">
+      <!-- Injected by assessment.js -->
+    </div>
+
+    <!-- Sticky Bottom Submit Bar -->
+    <div class="submit-assessment-bar">
+      <div>
+        <strong id="ratedCount" style="font-size: 1rem; color: var(--dark-900);">0 Skills Rated</strong>
+        <p style="font-size: 0.85rem; color: var(--slate-500);">Your ratings will update your mathematical role readiness score immediately.</p>
+      </div>
+      <button id="submitAssessmentBtn" class="btn btn-primary btn-lg">
+        <i class="fas fa-chart-line"></i> Save & View Gap Analysis
+      </button>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>Skill Gap Analyzer &copy; 2026. Student Competency Evaluation Framework.</p>
+  </footer>
+
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/assessment.js"></script>
+</body>
+</html>

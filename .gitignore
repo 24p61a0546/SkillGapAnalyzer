@@ -1,0 +1,36 @@
+# Compiled class files
+*.class
+build/
+classes/
+
+# Log files
+*.log
+
+# Package Files
+*.jar
+*.war
+dist/
+
+# Virtual Machine Crash Logs
+hs_err_pid*
+replay_pid*
+
+# IDE & Editor files
+.idea/
+*.iml
+.project
+.classpath
+.settings/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# OS Generated
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary files
+sources.txt
+*.tmp
+*.bak

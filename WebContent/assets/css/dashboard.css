@@ -1,0 +1,281 @@
+/* =====================================================================
+   Skill Gap Analyzer - Dashboard Stylesheet
+   ===================================================================== */
+
+/* Welcome Banner */
+.welcome-banner {
+  background: linear-gradient(135deg, #312e81 0%, #4338ca 50%, #6366f1 100%);
+  color: var(--white);
+  padding: 2.25rem;
+  border-radius: var(--radius-lg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  box-shadow: 0 10px 25px -5px rgba(67, 56, 202, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.welcome-banner::after {
+  content: "";
+  position: absolute;
+  right: -50px;
+  bottom: -50px;
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  pointer-events: none;
+}
+
+.welcome-info h1 {
+  font-size: 1.85rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+}
+
+.welcome-info p {
+  color: #c7d2fe;
+  font-size: 1rem;
+}
+
+.welcome-meta {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 1rem;
+  font-size: 0.875rem;
+}
+
+.welcome-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-full);
+}
+
+.welcome-action .btn {
+  background: var(--white);
+  color: var(--primary);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.welcome-action .btn:hover {
+  background: var(--slate-100);
+}
+
+/* KPI Summary Cards Grid */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.kpi-card {
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.kpi-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.kpi-icon-wrap {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.kpi-primary { background: var(--primary-light); color: var(--primary); }
+.kpi-success { background: var(--success-bg); color: var(--success); }
+.kpi-warning { background: var(--warning-bg); color: var(--warning); }
+.kpi-danger  { background: var(--danger-bg); color: var(--danger); }
+
+.kpi-data h3 {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--dark-900);
+  line-height: 1.2;
+}
+
+.kpi-data p {
+  font-size: 0.875rem;
+  color: var(--slate-500);
+  font-weight: 500;
+}
+
+/* Dashboard Split Grid (Readiness & Top Gaps) */
+.dashboard-split {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+/* Target Role Card */
+.target-role-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.target-role-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.target-role-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  background: var(--primary-light);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+}
+
+.target-role-details h2 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--dark-900);
+}
+
+.target-role-meta {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.35rem;
+  font-size: 0.85rem;
+  color: var(--slate-500);
+}
+
+.readiness-meter-wrap {
+  margin: 1.75rem 0;
+}
+
+.meter-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.progress-track {
+  height: 12px;
+  background: var(--slate-100);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  border-radius: var(--radius-full);
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Quick Action Cards */
+.quick-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.25rem;
+}
+
+.action-card {
+  background: var(--white);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+  transition: all var(--transition-normal);
+}
+
+.action-card:hover {
+  border-color: var(--primary);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.action-header {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.action-header i {
+  font-size: 1.35rem;
+  color: var(--primary);
+}
+
+.action-header h4 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--dark-900);
+}
+
+.action-card p {
+  font-size: 0.875rem;
+  color: var(--slate-500);
+}
+
+/* Top Gaps List */
+.gaps-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.gap-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1rem;
+  background: var(--slate-50);
+  border: 1px solid var(--slate-200);
+  border-radius: var(--radius-md);
+}
+
+.gap-item-info h5 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--dark-900);
+}
+
+.gap-item-info span {
+  font-size: 0.8rem;
+  color: var(--slate-500);
+}
+
+@media (max-width: 900px) {
+  .dashboard-split {
+    grid-template-columns: 1fr;
+  }
+  .welcome-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.25rem;
+  }
+}

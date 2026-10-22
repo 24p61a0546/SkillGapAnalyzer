@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Job Roles Catalog | Skill Gap Analyzer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/global.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="dashboard.html" class="brand-logo">
+        <div class="brand-icon"><i class="fas fa-chart-line"></i></div>
+        <span>SkillGap<span style="color: var(--primary);">Analyzer</span></span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="dashboard.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+        <li><a href="roles.html" class="nav-link active"><i class="fas fa-briefcase"></i> Job Roles</a></li>
+        <li><a href="assessment.html" class="nav-link"><i class="fas fa-tasks"></i> Assessment</a></li>
+        <li><a href="analysis.html" class="nav-link"><i class="fas fa-radar"></i> Gap Analysis</a></li>
+        <li><a href="recommendations.html" class="nav-link"><i class="fas fa-graduation-cap"></i> Roadmaps</a></li>
+      </ul>
+
+      <div class="nav-auth">
+        <a href="dashboard.html" class="btn btn-secondary btn-sm"><i class="fas fa-tachometer-alt"></i> Portal</a>
+        <button onclick="API.logout()" class="btn btn-secondary btn-sm"><i class="fas fa-sign-out-alt"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Industry Job Roles & Benchmark Matrix</h1>
+        <p class="page-subtitle">Explore entry-level and mid-level software career paths benchmarked against current hiring trends.</p>
+      </div>
+      <a href="analysis.html" class="btn btn-primary btn-sm"><i class="fas fa-chart-line"></i> View Gap Report</a>
+    </div>
+
+    <!-- Job Roles Grid -->
+    <div id="rolesContainer" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 1.5rem;">
+      <!-- Populated dynamically via roles.js -->
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>Skill Gap Analyzer &copy; 2026. Real-Time Industry Competency Standards.</p>
+  </footer>
+
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/roles.js"></script>
+</body>
+</html>

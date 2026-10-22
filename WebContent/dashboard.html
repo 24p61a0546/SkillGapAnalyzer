@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Portal | Skill Gap Analyzer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="assets/css/global.css">
+  <link rel="stylesheet" href="assets/css/dashboard.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="dashboard.html" class="brand-logo">
+        <div class="brand-icon"><i class="fas fa-chart-line"></i></div>
+        <span>SkillGap<span style="color: var(--primary);">Analyzer</span></span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="dashboard.html" class="nav-link active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+        <li><a href="roles.html" class="nav-link"><i class="fas fa-briefcase"></i> Job Roles</a></li>
+        <li><a href="assessment.html" class="nav-link"><i class="fas fa-tasks"></i> Assessment</a></li>
+        <li><a href="analysis.html" class="nav-link"><i class="fas fa-radar"></i> Gap Analysis</a></li>
+        <li><a href="recommendations.html" class="nav-link"><i class="fas fa-graduation-cap"></i> Roadmaps</a></li>
+      </ul>
+
+      <div class="nav-auth">
+        <span id="navUserEmail" style="font-size: 0.85rem; color: var(--slate-500); font-weight: 500;"></span>
+        <button onclick="API.logout()" class="btn btn-secondary btn-sm" title="Sign Out">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Welcome Banner -->
+    <div class="welcome-banner">
+      <div class="welcome-info">
+        <h1>Welcome Back, <span id="userName">Student</span>!</h1>
+        <p>Keep assessing your technical proficiencies and closing your skill gaps for campus recruitment.</p>
+        <div class="welcome-meta">
+          <div class="welcome-meta-item"><i class="fas fa-university"></i> <span id="userDept">Computer Science</span></div>
+          <div class="welcome-meta-item"><i class="fas fa-calendar"></i> <span id="userYear">3rd Year</span></div>
+        </div>
+      </div>
+      <div class="welcome-action">
+        <a href="assessment.html" class="btn btn-lg">
+          <i class="fas fa-clipboard-check"></i> Update Skill Ratings
+        </a>
+      </div>
+    </div>
+
+    <!-- KPI Summary Grid -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-icon-wrap kpi-primary"><i class="fas fa-tachometer-alt"></i></div>
+        <div class="kpi-data">
+          <h3 id="kpiReadiness">0%</h3>
+          <p>Role Readiness Score</p>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-icon-wrap kpi-success"><i class="fas fa-check-double"></i></div>
+        <div class="kpi-data">
+          <h3 id="kpiSkillsMet">0</h3>
+          <p>Benchmarks Met</p>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-icon-wrap kpi-warning"><i class="fas fa-sliders-h"></i></div>
+        <div class="kpi-data">
+          <h3 id="kpiAssessed">0</h3>
+          <p>Total Skills Assessed</p>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-icon-wrap kpi-danger"><i class="fas fa-exclamation-triangle"></i></div>
+        <div class="kpi-data">
+          <h3 id="kpiCriticalGaps">0</h3>
+          <p>Critical Skill Gaps</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dashboard Split Grid -->
+    <div class="dashboard-split">
+      <!-- Target Role Details -->
+      <div class="card target-role-box">
+        <div>
+          <div class="card-header">
+            <h2 class="card-title"><i class="fas fa-bullseye" style="color: var(--primary);"></i> Current Target Career</h2>
+            <a href="roles.html" class="btn btn-outline btn-sm"><i class="fas fa-exchange-alt"></i> Change Role</a>
+          </div>
+
+          <div class="target-role-header">
+            <div class="target-role-icon"><i class="fas fa-laptop-code"></i></div>
+            <div class="target-role-details">
+              <h2 id="targetRoleTitle">Full Stack Java Developer</h2>
+              <div class="target-role-meta">
+                <span><i class="fas fa-tag"></i> <span id="targetRoleCategory">Software Engineering</span></span>
+                <span><i class="fas fa-money-bill-wave"></i> <span id="targetRoleSalary">$95k - $130k</span></span>
+                <span><i class="fas fa-chart-line"></i> <span id="targetRoleDemand" style="color: var(--success); font-weight: 600;">Very High Demand</span></span>
+              </div>
+            </div>
+          </div>
+
+          <p id="targetRoleDesc" style="color: var(--slate-600); font-size: 0.95rem; margin-top: 1.25rem;">
+            Loading career benchmark description...
+          </p>
+
+          <div class="readiness-meter-wrap">
+            <div class="meter-labels">
+              <span>Readiness Progress</span>
+              <span id="kpiReadinessLevel" class="badge badge-primary">Foundational Phase</span>
+            </div>
+            <div class="progress-track">
+              <div id="readinessFill" class="progress-fill" style="width: 0%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+          <a href="analysis.html" class="btn btn-primary" style="flex: 1;">
+            <i class="fas fa-chart-pie"></i> Detailed Gap Visualizer
+          </a>
+          <a href="recommendations.html" class="btn btn-secondary">
+            <i class="fas fa-graduation-cap"></i> View Roadmaps
+          </a>
+        </div>
+      </div>
+
+      <!-- Priority Gaps to Address -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title"><i class="fas fa-fire" style="color: var(--danger);"></i> Priority Skills to Upgrade</h2>
+          <a href="analysis.html" style="font-size: 0.85rem; font-weight: 600;">View All Gaps &rarr;</a>
+        </div>
+        <p style="color: var(--slate-500); font-size: 0.85rem; margin-bottom: 1rem;">
+          Focus on these high-importance skills to immediately increase your readiness score.
+        </p>
+
+        <div id="topGapsList" class="gaps-list">
+          <!-- Populated dynamically via dashboard.js -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Navigation Hub -->
+    <div style="margin-top: 2.5rem;">
+      <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--dark-900); margin-bottom: 1.25rem;">Quick Navigation Hub</h3>
+      <div class="quick-actions-grid">
+        <a href="assessment.html" class="action-card">
+          <div class="action-header">
+            <i class="fas fa-tasks"></i>
+            <h4>Skill Assessment</h4>
+          </div>
+          <p>Rate your proficiency across Core CS, Web, Database, and Cloud technologies.</p>
+          <span style="font-size: 0.85rem; font-weight: 600; color: var(--primary);">Take Quiz &rarr;</span>
+        </a>
+
+        <a href="analysis.html" class="action-card">
+          <div class="action-header">
+            <i class="fas fa-radar"></i>
+            <h4>Radar Gap Analysis</h4>
+          </div>
+          <p>Explore multi-axis radar visualizations comparing your skill levels with target benchmarks.</p>
+          <span style="font-size: 0.85rem; font-weight: 600; color: var(--primary);">View Report &rarr;</span>
+        </a>
+
+        <a href="roles.html" class="action-card">
+          <div class="action-header">
+            <i class="fas fa-briefcase"></i>
+            <h4>Job Roles Explorer</h4>
+          </div>
+          <p>Compare requirements across AI, DevOps, Cybersecurity, Full Stack, and Frontend roles.</p>
+          <span style="font-size: 0.85rem; font-weight: 600; color: var(--primary);">Browse Roles &rarr;</span>
+        </a>
+
+        <a href="recommendations.html" class="action-card">
+          <div class="action-header">
+            <i class="fas fa-graduation-cap"></i>
+            <h4>Learning Roadmaps</h4>
+          </div>
+          <p>Access curated free tutorials, official documentations, and hands-on coding repositories.</p>
+          <span style="font-size: 0.85rem; font-weight: 600; color: var(--primary);">Start Learning &rarr;</span>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>Skill Gap Analyzer &copy; 2026. College Project Evaluation Platform.</p>
+  </footer>
+
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/dashboard.js"></script>
+</body>
+</html>
