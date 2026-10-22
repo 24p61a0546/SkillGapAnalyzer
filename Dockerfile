@@ -8,13 +8,21 @@ FROM eclipse-temurin:17-jdk-alpine AS builder
 
 WORKDIR /app
 
-# Install Ant
-RUN apk add --no-cache apache-ant
+# Install Ant, curl, and ca-certificates
+RUN apk add --no-cache apache-ant curl ca-certificates
 
 # Copy project files
 COPY . .
 
-# Run Ant WAR packaging
+# Ensure lib and WebContent/WEB-INF/lib exist and fetch dependencies
+RUN mkdir -p lib WebContent/WEB-INF/lib && \
+    curl -fsSL -o lib/javax.servlet-api-4.0.1.jar https://repo1.maven.org/maven2/javax/servlet/javax.servlet-api/4.0.1/javax.servlet-api-4.0.1.jar && \
+    curl -fsSL -o lib/mysql-connector-j-8.3.0.jar https://repo1.maven.org/maven2/com/mysql/mysql-connector-j/8.3.0/mysql-connector-j-8.3.0.jar && \
+    curl -fsSL -o lib/gson-2.10.1.jar https://repo1.maven.org/maven2/com/google/code/gson/gson/2.10.1/gson-2.10.1.jar && \
+    cp lib/mysql-connector-j-8.3.0.jar WebContent/WEB-INF/lib/ && \
+    cp lib/gson-2.10.1.jar WebContent/WEB-INF/lib/
+
+# Run Ant WAR packaging (with standard fallback)
 RUN ant war || ( \
     mkdir -p build/classes dist build/war_temp && \
     find src -name "*.java" > sources.txt && \

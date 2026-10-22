@@ -150,8 +150,33 @@ public class DBConnection {
         // Password resolution (Supports blank passwords accurately)
         password = resolvePassword(props);
 
-        url = "jdbc:mysql://" + host + ":" + port + "/" + dbName
-                + "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&characterEncoding=UTF-8&connectTimeout=5000";
+        // Direct JDBC URL resolution (Supports cloud provider connection strings e.g. DATABASE_URL / DB_URL)
+        String directUrl = resolveValue(
+                new String[]{"db.url", "jdbc.url"},
+                new String[]{"DB_URL", "JDBC_DATABASE_URL", "DATABASE_URL"},
+                props,
+                new String[]{"db.url", "jdbc.url", "url"},
+                null
+        );
+
+        if (directUrl != null && !directUrl.trim().isEmpty()) {
+            if (!directUrl.startsWith("jdbc:")) {
+                directUrl = "jdbc:" + directUrl;
+            }
+            url = directUrl;
+        } else {
+            String sslSetting = resolveValue(
+                    new String[]{"db.ssl"},
+                    new String[]{"DB_SSL", "MYSQL_SSL"},
+                    props,
+                    new String[]{"db.ssl", "ssl"},
+                    "false"
+            );
+            boolean useSSL = "true".equalsIgnoreCase(sslSetting) || "required".equalsIgnoreCase(sslSetting);
+
+            url = "jdbc:mysql://" + host + ":" + port + "/" + dbName
+                    + "?useSSL=" + useSSL + "&allowPublicKeyRetrieval=true&serverTimezone=UTC&characterEncoding=UTF-8&connectTimeout=5000";
+        }
 
         lastLoadTime = System.currentTimeMillis();
         System.out.println("[DBConnection] Configuration loaded from " + configSource
