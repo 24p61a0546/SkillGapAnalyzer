@@ -7,12 +7,10 @@ import com.skillgap.service.GapAnalysisService;
 import com.skillgap.util.JsonUtil;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebServlet("/api/analysis")
 public class AnalysisServlet extends HttpServlet {
 
     private final GapAnalysisService gapAnalysisService = new GapAnalysisService();

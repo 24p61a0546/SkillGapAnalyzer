@@ -6,12 +6,10 @@ import com.skillgap.service.AuthService;
 import com.skillgap.util.JsonUtil;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebServlet("/api/auth/*")
 public class AuthServlet extends HttpServlet {
 
     private final AuthService authService = new AuthService();

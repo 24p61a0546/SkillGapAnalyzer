@@ -10,13 +10,11 @@ import com.skillgap.model.User;
 import com.skillgap.util.JsonUtil;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
 
-@WebServlet("/api/assessment/*")
 public class AssessmentServlet extends HttpServlet {
 
     private final AssessmentDAO assessmentDAO = new AssessmentDAO();
