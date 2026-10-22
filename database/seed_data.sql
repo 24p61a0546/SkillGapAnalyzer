@@ -203,11 +203,11 @@ INSERT INTO recommendations (skill_id, title, type, provider, url, estimated_hou
 
 -- ---------------------------------------------------------------------
 -- 5. Demo Student Account
--- Password: password123 (SHA-256: ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f)
+-- Password: password123 (PBKDF2 with HMAC-SHA256: 65536:5f8bbb77b100e89484fd82c7ef62ab0e:52388dfc4784aeef9cba24b6b635cb9e6ad334b710e2f57274a90983a2d08e01)
 -- ---------------------------------------------------------------------
 INSERT INTO users (id, full_name, email, password_hash, department, year_of_study, target_role_id) VALUES
-(1, 'Alex Mercer', 'student@college.edu', 'ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f', 'Computer Science & Engineering', '3rd Year', 1)
-ON DUPLICATE KEY UPDATE full_name=VALUES(full_name);
+(1, 'Alex Mercer', 'student@college.edu', '65536:5f8bbb77b100e89484fd82c7ef62ab0e:52388dfc4784aeef9cba24b6b635cb9e6ad334b710e2f57274a90983a2d08e01', 'Computer Science & Engineering', '3rd Year', 1)
+ON DUPLICATE KEY UPDATE full_name=VALUES(full_name), password_hash=VALUES(password_hash);
 
 -- ---------------------------------------------------------------------
 -- 6. Initial Sample Assessment for Demo Student (Alex Mercer)

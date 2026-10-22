@@ -93,7 +93,7 @@ SKILLGAPANALYZER/
 │           │   └── CorsAndEncodingFilter.java # UTF-8 encoding & headers
 │           └── util/               # Utility classes
 │               ├── DBConnection.java          # JDBC connection manager
-│               ├── PasswordUtil.java          # SHA-256 password hashing
+│               ├── PasswordUtil.java          # PBKDF2 with HMAC-SHA256 & Salt password hashing
 │               └── JsonUtil.java              # Gson response serializing
 │
 └── WebContent/                     # Web root deployed into WAR
@@ -301,7 +301,7 @@ The project includes a production-grade multi-stage `Dockerfile` and `docker-com
 *Answer*: All database queries in the DAO layer exclusively utilize `PreparedStatement` with parameterized placeholders (`?`), ensuring user inputs are never concatenated directly into raw SQL.
 
 **Q3: How are passwords secured?**  
-*Answer*: Passwords are never stored in plaintext. They are hashed using cryptographic **SHA-256** inside `PasswordUtil.java` before insertion into the database.
+*Answer*: Passwords are never stored in plaintext. They are protected using **PBKDF2 with HMAC-SHA256**, a cryptographically secure 128-bit random salt per user, and 65,536 iterations inside `PasswordUtil.java` before insertion into the database, adhering to OWASP guidelines against rainbow table and brute-force attacks.
 
 **Q4: How does the skill gap visualization work?**  
 *Answer*: The backend computes benchmark discrepancies and delivers a structured JSON payload to the client. The frontend uses **Chart.js** to dynamically render an $N$-dimensional Radar chart overlaying the student's proficiency polygon directly atop the industry benchmark polygon.
