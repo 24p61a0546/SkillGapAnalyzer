@@ -45,10 +45,10 @@ function renderRecommendations(items) {
 
   if (items.length === 0) {
     container.innerHTML = `
-      <div style="text-align: center; padding: 3rem; background: white; border-radius: 12px; grid-column: 1 / -1;">
-        <i class="fas fa-award" style="font-size: 3rem; color: var(--success); margin-bottom: 1rem;"></i>
-        <h3>No Urgent Gaps Found!</h3>
-        <p style="color: var(--slate-500); max-width: 500px; margin: 0.5rem auto 1.5rem;">
+      <div style="text-align: center; padding: 3rem; background: rgba(15, 23, 42, 0.75); border: 1px solid var(--border-medium); border-radius: var(--radius-xl); grid-column: 1 / -1;">
+        <i class="fas fa-award" style="font-size: 3rem; color: #34d399; margin-bottom: 1rem;"></i>
+        <h3 style="color: var(--text-primary);">No Urgent Gaps Found!</h3>
+        <p style="color: var(--text-muted); max-width: 500px; margin: 0.5rem auto 1.5rem;">
           You currently meet or exceed the benchmarks for your target role. You can explore advanced certifications or practice coding challenges.
         </p>
         <a href="${API.getBaseUrl()}/roles.html" class="btn btn-primary">

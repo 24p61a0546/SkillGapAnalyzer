@@ -97,6 +97,54 @@ public class UserDAO {
         }
     }
 
+    /**
+     * Obtains or creates a guest user profile for frictionless analysis without passwords or logins.
+     * Persists to the users table via JDBC when available, with a resilient fallback.
+     */
+    public User getOrCreateGuestUser(String fullName, String email, int targetRoleId) {
+        String cleanName = (fullName != null && !fullName.trim().isEmpty()) ? fullName.trim() : "Student Analyst";
+        String cleanEmail = (email != null && !email.trim().isEmpty())
+                ? email.trim().toLowerCase()
+                : "guest_" + System.currentTimeMillis() + "@skillgap.local";
+        int roleId = (targetRoleId > 0) ? targetRoleId : 1;
+
+        try {
+            User existing = findByEmail(cleanEmail);
+            if (existing != null) {
+                existing.setFullName(cleanName);
+                existing.setTargetRoleId(roleId);
+                updateProfile(existing);
+                updateTargetRole(existing.getId(), roleId);
+                return existing;
+            }
+
+            User newUser = new User();
+            newUser.setFullName(cleanName);
+            newUser.setEmail(cleanEmail);
+            newUser.setPasswordHash("GUEST_ACCESS");
+            newUser.setDepartment("Computer Science & Engineering");
+            newUser.setYearOfStudy("3rd Year");
+            newUser.setTargetRoleId(roleId);
+
+            boolean created = create(newUser);
+            if (created && newUser.getId() > 0) {
+                return newUser;
+            }
+        } catch (Exception e) {
+            System.err.println("[UserDAO] Notice: Using in-memory guest user profile (" + e.getMessage() + ")");
+        }
+
+        // Resilient fallback (e.g. if DB is temporarily offline or in transition)
+        User fallbackUser = new User();
+        fallbackUser.setId(1);
+        fallbackUser.setFullName(cleanName);
+        fallbackUser.setEmail(cleanEmail);
+        fallbackUser.setDepartment("Computer Science & Engineering");
+        fallbackUser.setYearOfStudy("3rd Year");
+        fallbackUser.setTargetRoleId(roleId);
+        return fallbackUser;
+    }
+
     private User mapUser(ResultSet rs) throws SQLException {
         User user = new User();
         user.setId(rs.getInt("id"));

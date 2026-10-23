@@ -1,34 +1,40 @@
 /* =====================================================================
-   Skill Gap Analyzer - Gap Analysis & Reports Stylesheet
+   Skill Gap Analyzer - Futuristic Gap Analysis & Reports Stylesheet
+   Dark Glassmorphism, Neon Visualizer & Glowing Table Matrices
    ===================================================================== */
 
 .analysis-role-selector {
   display: flex;
   align-items: center;
   gap: 1rem;
-  background: var(--white);
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   padding: 1rem 1.5rem;
   border-radius: var(--radius-lg);
-  border: 1px solid var(--slate-200);
+  border: 1px solid var(--border-medium);
   box-shadow: var(--shadow-sm);
   margin-bottom: 2rem;
 }
 
 .analysis-role-selector label {
   font-weight: 700;
-  color: var(--dark-900);
+  color: #38bdf8;
   white-space: nowrap;
 }
 
 .analysis-role-selector select {
   flex: 1;
   max-width: 400px;
-  padding: 0.6rem 1rem;
-  border: 1px solid var(--slate-300);
+  padding: 0.65rem 1rem;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid var(--border-medium);
   border-radius: var(--radius-md);
+  color: var(--text-primary);
   font-family: inherit;
   font-size: 0.95rem;
-  font-weight: 500;
+  font-weight: 600;
+  outline: none;
 }
 
 /* Charts Dual Column */
@@ -40,25 +46,35 @@
 }
 
 .chart-card {
-  background: var(--white);
-  border: 1px solid var(--slate-200);
+  background: rgba(15, 23, 42, 0.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
   padding: 1.5rem;
   box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
+  transition: all var(--transition-normal);
+}
+
+.chart-card:hover {
+  border-color: var(--border-glow);
+  box-shadow: var(--shadow-md), 0 0 25px rgba(99, 102, 241, 0.2);
 }
 
 .chart-wrapper {
   position: relative;
-  height: 340px;
+  height: 350px;
   width: 100%;
 }
 
 /* Gap Matrix Table */
 .table-card {
-  background: var(--white);
-  border: 1px solid var(--slate-200);
+  background: rgba(15, 23, 42, 0.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: var(--shadow-sm);
@@ -78,35 +94,35 @@
 }
 
 .gap-table th {
-  background: var(--slate-50);
+  background: rgba(15, 23, 42, 0.9);
   padding: 1rem 1.25rem;
-  color: var(--slate-600);
+  color: #38bdf8;
   font-weight: 700;
-  border-bottom: 1px solid var(--slate-200);
+  border-bottom: 1px solid var(--border-subtle);
   text-transform: uppercase;
-  font-size: 0.75rem;
+  font-size: 0.785rem;
   letter-spacing: 0.05em;
 }
 
 .gap-table td {
   padding: 1.1rem 1.25rem;
-  border-bottom: 1px solid var(--slate-100);
-  color: var(--dark-800);
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
   vertical-align: middle;
 }
 
-.gap-table tr:hover {
-  background: var(--slate-50);
+.gap-table tr:hover td {
+  background: rgba(255, 255, 255, 0.025);
 }
 
 .skill-cell-name {
   font-weight: 700;
-  color: var(--dark-900);
+  color: var(--text-primary);
 }
 
 .skill-cell-cat {
   font-size: 0.8rem;
-  color: var(--slate-400);
+  color: var(--text-muted);
 }
 
 /* Level Indicators */
@@ -118,98 +134,50 @@
 
 .level-dots {
   display: flex;
-  gap: 3px;
+  gap: 4px;
 }
 
 .dot {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: var(--slate-200);
+  background: rgba(255, 255, 255, 0.1);
+  transition: all var(--transition-fast);
 }
 
 .dot.active-target {
-  background: var(--slate-700);
+  background: #38bdf8;
+  box-shadow: 0 0 6px #38bdf8;
 }
 
 .dot.active-user {
-  background: var(--primary);
+  background: #a855f7;
+  box-shadow: 0 0 6px #a855f7;
 }
 
 .gap-badge {
   font-weight: 700;
-  font-size: 0.85rem;
+  font-size: 0.825rem;
   padding: 0.25rem 0.65rem;
   border-radius: var(--radius-sm);
 }
 
 .gap-badge-zero {
-  background: var(--success-bg);
-  color: var(--success);
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.35);
 }
 
 .gap-badge-minor {
-  background: var(--warning-bg);
-  color: #b45309;
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.35);
 }
 
 .gap-badge-critical {
-  background: var(--danger-bg);
-  color: var(--danger);
-}
-
-/* Recommendations Card Grid */
-.recom-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 1.5rem;
-}
-
-.recom-card {
-  background: var(--white);
-  border: 1px solid var(--slate-200);
-  border-radius: var(--radius-lg);
-  padding: 1.5rem;
-  box-shadow: var(--shadow-sm);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 1.25rem;
-  transition: all var(--transition-normal);
-}
-
-.recom-card:hover {
-  border-color: var(--primary);
-  box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
-}
-
-.recom-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 0.5rem;
-}
-
-.recom-title {
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: var(--dark-900);
-  line-height: 1.35;
-}
-
-.recom-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  font-size: 0.825rem;
-  color: var(--slate-500);
-}
-
-.recom-meta span {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.35);
 }
 
 @media (max-width: 960px) {

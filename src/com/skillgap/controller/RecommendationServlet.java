@@ -17,15 +17,19 @@ public class RecommendationServlet extends HttpServlet {
     private final RecommendationService recommendationService = new RecommendationService();
     private final UserDAO userDAO = new UserDAO();
 
+    private User getOrCreateSessionUser(HttpServletRequest req) {
+        HttpSession session = req.getSession(true);
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            user = userDAO.getOrCreateGuestUser("Student Analyst", "", 1);
+            session.setAttribute("user", user);
+        }
+        return user;
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession(false);
-        if (session == null || session.getAttribute("user") == null) {
-            JsonUtil.sendError(resp, HttpServletResponse.SC_UNAUTHORIZED, "User not authenticated.");
-            return;
-        }
-
-        User sessionUser = (User) session.getAttribute("user");
+        User user = getOrCreateSessionUser(req);
         String skillParam = req.getParameter("skillId");
 
         try {
@@ -34,8 +38,7 @@ public class RecommendationServlet extends HttpServlet {
                 List<Recommendation> recs = recommendationService.getRecommendationsBySkill(skillId);
                 JsonUtil.sendSuccess(resp, "Recommendations for skill loaded", recs);
             } else {
-                User user = userDAO.findById(sessionUser.getId());
-                int targetRoleId = (user != null && user.getTargetRoleId() != null && user.getTargetRoleId() > 0)
+                int targetRoleId = (user.getTargetRoleId() != null && user.getTargetRoleId() > 0)
                         ? user.getTargetRoleId() : 1;
 
                 List<Recommendation> roadmap = recommendationService.getRecommendationsForStudentGaps(user.getId(), targetRoleId);

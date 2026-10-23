@@ -1,5 +1,6 @@
 /**
  * Skill Gap Analysis Visualizer (Chart.js Radar & Bar Visualizations + Gap Matrix)
+ * Styled for Futuristic Dark Navy Theme
  */
 
 let radarChart = null;
@@ -32,7 +33,6 @@ async function loadRolesDropdown() {
 }
 
 async function runAnalysis(roleId = null) {
-  const container = document.getElementById('analysisContent');
   const endpoint = roleId ? `/api/analysis?roleId=${roleId}` : '/api/analysis';
 
   try {
@@ -84,7 +84,7 @@ function renderCharts(report) {
   const targetLevels = gaps.map(g => g.requiredProficiency);
   const userLevels = gaps.map(g => g.currentProficiency);
 
-  // 1. Render Radar Chart (Skill Competency Web)
+  // 1. Render Radar Chart (Skill Competency Web) with Futuristic Glowing Neon
   const radarCtx = document.getElementById('radarChartCanvas');
   if (radarCtx) {
     if (radarChart) radarChart.destroy();
@@ -97,23 +97,23 @@ function renderCharts(report) {
           {
             label: 'Benchmark Requirement',
             data: targetLevels,
-            backgroundColor: 'rgba(79, 70, 229, 0.15)',
-            borderColor: '#4f46e5',
-            pointBackgroundColor: '#4f46e5',
-            pointBorderColor: '#fff',
+            backgroundColor: 'rgba(56, 189, 248, 0.2)',
+            borderColor: '#38bdf8',
+            pointBackgroundColor: '#38bdf8',
+            pointBorderColor: '#0f172a',
             pointHoverBackgroundColor: '#fff',
-            pointHoverBorderColor: '#4f46e5',
+            pointHoverBorderColor: '#38bdf8',
             borderWidth: 2
           },
           {
             label: 'Your Current Level',
             data: userLevels,
-            backgroundColor: 'rgba(16, 185, 129, 0.2)',
-            borderColor: '#10b981',
-            pointBackgroundColor: '#10b981',
-            pointBorderColor: '#fff',
+            backgroundColor: 'rgba(168, 85, 247, 0.25)',
+            borderColor: '#c084fc',
+            pointBackgroundColor: '#c084fc',
+            pointBorderColor: '#0f172a',
             pointHoverBackgroundColor: '#fff',
-            pointHoverBorderColor: '#10b981',
+            pointHoverBorderColor: '#c084fc',
             borderWidth: 2
           }
         ]
@@ -123,19 +123,29 @@ function renderCharts(report) {
         maintainAspectRatio: false,
         scales: {
           r: {
-            angleLines: { color: 'rgba(203, 213, 225, 0.6)' },
-            grid: { color: 'rgba(203, 213, 225, 0.4)' },
+            angleLines: { color: 'rgba(255, 255, 255, 0.12)' },
+            grid: { color: 'rgba(255, 255, 255, 0.08)' },
             pointLabels: {
               font: { size: 11, family: 'Inter', weight: 600 },
-              color: '#334155'
+              color: '#cbd5e1'
             },
             suggestedMin: 0,
             suggestedMax: 5,
-            ticks: { stepSize: 1, backdropColor: 'transparent' }
+            ticks: {
+              stepSize: 1,
+              backdropColor: 'transparent',
+              color: '#94a3b8'
+            }
           }
         },
         plugins: {
-          legend: { position: 'top', labels: { font: { family: 'Inter', weight: 600 } } }
+          legend: {
+            position: 'top',
+            labels: {
+              font: { family: 'Inter', weight: 600 },
+              color: '#f8fafc'
+            }
+          }
         }
       }
     });
@@ -152,15 +162,15 @@ function renderCharts(report) {
         labels: labels,
         datasets: [
           {
-            label: 'Required Level',
+            label: 'Benchmark Requirement',
             data: targetLevels,
-            backgroundColor: '#4f46e5',
+            backgroundColor: 'rgba(56, 189, 248, 0.85)',
             borderRadius: 6
           },
           {
-            label: 'Your Level',
+            label: 'Your Current Level',
             data: userLevels,
-            backgroundColor: '#10b981',
+            backgroundColor: 'rgba(168, 85, 247, 0.85)',
             borderRadius: 6
           }
         ]
@@ -170,20 +180,29 @@ function renderCharts(report) {
         maintainAspectRatio: false,
         scales: {
           y: {
-            beginAtZero: true,
-            max: 5,
-            ticks: { stepSize: 1 }
+            suggestedMin: 0,
+            suggestedMax: 5,
+            ticks: { stepSize: 1, color: '#94a3b8' },
+            grid: { color: 'rgba(255, 255, 255, 0.08)' }
           },
           x: {
+            grid: { display: false },
             ticks: {
               maxRotation: 45,
               minRotation: 25,
-              font: { size: 10, family: 'Inter' }
+              font: { size: 10, family: 'Inter' },
+              color: '#cbd5e1'
             }
           }
         },
         plugins: {
-          legend: { position: 'top', labels: { font: { family: 'Inter', weight: 600 } } }
+          legend: {
+            position: 'top',
+            labels: {
+              font: { family: 'Inter', weight: 600 },
+              color: '#f8fafc'
+            }
+          }
         }
       }
     });
@@ -196,7 +215,7 @@ function renderGapTable(report) {
 
   const gaps = report.skillGaps || [];
   if (gaps.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 2rem;">No skill benchmarks configured for this role.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 2rem; color: var(--text-muted);">No skill benchmarks configured for this role.</td></tr>`;
     return;
   }
 
@@ -229,20 +248,20 @@ function renderGapTable(report) {
         </td>
         <td>
           <div class="level-bar-wrap">
-            <span style="font-weight: 700; width: 14px;">${g.requiredProficiency}</span>
+            <span style="font-weight: 700; width: 14px; color: #38bdf8;">${g.requiredProficiency}</span>
             <div class="level-dots">${dotsTarget}</div>
           </div>
         </td>
         <td>
           <div class="level-bar-wrap">
-            <span style="font-weight: 700; width: 14px;">${g.currentProficiency}</span>
+            <span style="font-weight: 700; width: 14px; color: #c084fc;">${g.currentProficiency}</span>
             <div class="level-dots">${dotsUser}</div>
           </div>
         </td>
         <td>${statusBadge}</td>
         <td>
           ${g.gap > 0 ? `
-            <a href="${API.getBaseUrl()}/recommendations.html?skillId=${g.skillId}" class="btn btn-outline btn-sm">
+            <a href="recommendations.html?skillId=${g.skillId}" class="btn btn-outline btn-sm">
               <i class="fas fa-graduation-cap"></i> View Roadmap
             </a>
           ` : `

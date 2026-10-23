@@ -8,6 +8,7 @@ public class GapAnalysisReport {
     private String roleTitle;
     private String roleCategory;
     private double readinessPercentage;
+    private double skillGapPercentage;
     private int totalSkillsRequired;
     private int skillsMetCount;
     private int skillsWithGapCount;
@@ -27,7 +28,13 @@ public class GapAnalysisReport {
     public void setRoleCategory(String roleCategory) { this.roleCategory = roleCategory; }
 
     public double getReadinessPercentage() { return readinessPercentage; }
-    public void setReadinessPercentage(double readinessPercentage) { this.readinessPercentage = readinessPercentage; }
+    public void setReadinessPercentage(double readinessPercentage) {
+        this.readinessPercentage = readinessPercentage;
+        this.skillGapPercentage = Math.round((100.0 - readinessPercentage) * 10.0) / 10.0;
+    }
+
+    public double getSkillGapPercentage() { return skillGapPercentage; }
+    public void setSkillGapPercentage(double skillGapPercentage) { this.skillGapPercentage = skillGapPercentage; }
 
     public int getTotalSkillsRequired() { return totalSkillsRequired; }
     public void setTotalSkillsRequired(int totalSkillsRequired) { this.totalSkillsRequired = totalSkillsRequired; }

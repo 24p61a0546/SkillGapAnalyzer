@@ -1,5 +1,6 @@
 /**
  * Skill Gap Analyzer - Core API Client & UI Helpers
+ * Frictionless student analysis without login/password barriers.
  */
 
 const API = {
@@ -31,17 +32,6 @@ const API = {
     try {
       const response = await fetch(url, config);
       const data = await response.json().catch(() => null);
-
-      if (response.status === 401) {
-        // Unauthorized - session expired
-        if (!window.location.pathname.endsWith('login.html') && !window.location.pathname.endsWith('register.html') && !window.location.pathname.endsWith('index.html')) {
-          this.showToast('Session expired. Please log in.', 'error');
-          setTimeout(() => {
-            window.location.href = `${this.getBaseUrl()}/login.html`;
-          }, 1200);
-        }
-        throw new Error(data?.message || 'Unauthorized');
-      }
 
       if (!response.ok) {
         throw new Error(data?.message || `Request failed with status ${response.status}`);
@@ -104,15 +94,8 @@ const API = {
     }
   },
 
-  async logout() {
-    try {
-      await this.get('/api/auth/logout');
-      this.showToast('Logged out successfully', 'success');
-      setTimeout(() => {
-        window.location.href = `${this.getBaseUrl()}/login.html`;
-      }, 800);
-    } catch (err) {
-      window.location.href = `${this.getBaseUrl()}/login.html`;
-    }
+  resetSession() {
+    sessionStorage.removeItem('skillgap_user');
+    window.location.href = `${this.getBaseUrl()}/index.html`;
   }
 };

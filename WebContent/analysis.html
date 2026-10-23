@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Skill Gap Analysis & Visualizer | Skill Gap Analyzer</title>
+  <title>Skill Gap Analysis &amp; Visualizer | Skill Gap Analyzer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="assets/css/global.css">
   <link rel="stylesheet" href="assets/css/analysis.css">
@@ -18,32 +18,37 @@
   <!-- Navigation Bar -->
   <nav class="navbar">
     <div class="nav-container">
-      <a href="dashboard.html" class="brand-logo">
-        <div class="brand-icon"><i class="fas fa-chart-line"></i></div>
-        <span>SkillGap<span style="color: var(--primary);">Analyzer</span></span>
+      <a href="index.html" class="nav-brand">
+        <div class="brand-logo-icon"><i class="fas fa-microchip"></i></div>
+        <span>SkillGap<span class="gradient-text">Analyzer</span></span>
       </a>
 
       <ul class="nav-links">
-        <li><a href="dashboard.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+        <li><a href="index.html" class="nav-link"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="assessment.html" class="nav-link"><i class="fas fa-tasks"></i> Skill Assessment</a></li>
+        <li><a href="analysis.html" class="nav-link active"><i class="fas fa-chart-pie"></i> Gap Analysis</a></li>
+        <li><a href="dashboard.html" class="nav-link"><i class="fas fa-columns"></i> Dashboard</a></li>
+        <li><a href="recommendations.html" class="nav-link"><i class="fas fa-map-signs"></i> Roadmaps</a></li>
         <li><a href="roles.html" class="nav-link"><i class="fas fa-briefcase"></i> Job Roles</a></li>
-        <li><a href="assessment.html" class="nav-link"><i class="fas fa-tasks"></i> Assessment</a></li>
-        <li><a href="analysis.html" class="nav-link active"><i class="fas fa-radar"></i> Gap Analysis</a></li>
-        <li><a href="recommendations.html" class="nav-link"><i class="fas fa-graduation-cap"></i> Roadmaps</a></li>
       </ul>
 
-      <div class="nav-auth">
-        <a href="assessment.html" class="btn btn-outline btn-sm"><i class="fas fa-sliders-h"></i> Adjust Ratings</a>
-        <button onclick="API.logout()" class="btn btn-secondary btn-sm"><i class="fas fa-sign-out-alt"></i></button>
+      <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <a href="assessment.html" class="btn btn-primary btn-sm"><i class="fas fa-sliders-h"></i> Adjust Ratings</a>
+        <a href="index.html" class="btn btn-secondary btn-sm" title="Start New Analysis"><i class="fas fa-redo"></i> Reset</a>
       </div>
     </div>
   </nav>
 
-  <!-- Main Content -->
-  <main class="main-content">
+  <!-- Main Container -->
+  <main class="container">
     <div class="page-header">
       <div>
-        <h1 class="page-title">Skill Gap Analysis & Readiness Report</h1>
-        <p class="page-subtitle">Multi-dimensional comparison of student competencies against industry benchmark requirements.</p>
+        <h1 class="page-title">
+          Skill Gap Analysis &amp; <span class="gradient-text">Readiness Report</span>
+        </h1>
+        <p class="page-subtitle">
+          Multi-dimensional comparison of student competencies against industry benchmark requirements.
+        </p>
       </div>
       <div>
         <a href="recommendations.html" class="btn btn-primary"><i class="fas fa-graduation-cap"></i> View Personalized Roadmap</a>
@@ -52,45 +57,49 @@
 
     <!-- Role Switcher -->
     <div class="analysis-role-selector">
-      <label for="roleSelect"><i class="fas fa-briefcase" style="color: var(--primary);"></i> Analyzing Against Role:</label>
+      <label for="roleSelect"><i class="fas fa-briefcase"></i> Analyzing Against Role:</label>
       <select id="roleSelect">
         <!-- Injected dynamically via analysis.js -->
       </select>
-      <span style="font-size: 0.85rem; color: var(--slate-500); margin-left: auto;">
+      <span style="font-size: 0.85rem; color: var(--text-muted); margin-left: auto;">
         Switch roles to simulate instant readiness comparison.
       </span>
     </div>
 
     <!-- Summary KPI Header Card -->
-    <div class="card" style="margin-bottom: 2rem; background: linear-gradient(135deg, #ffffff, var(--slate-50));">
+    <div class="card" style="margin-bottom: 2rem;">
       <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
         <div>
-          <span style="font-size: 0.8rem; font-weight: 700; color: var(--slate-400); text-transform: uppercase;">Benchmark Target</span>
-          <h2 id="reportRoleTitle" style="font-size: 1.6rem; font-weight: 800; color: var(--dark-900);">Loading...</h2>
+          <span style="font-size: 0.8rem; font-weight: 700; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.05em;">Benchmark Target</span>
+          <h2 id="reportRoleTitle" style="font-size: 1.75rem; font-weight: 800; color: var(--text-primary); margin-top: 0.25rem;">Loading...</h2>
         </div>
         <div style="text-align: right;">
           <span id="readinessBadge" class="badge badge-primary" style="font-size: 0.85rem; padding: 0.35rem 0.85rem;">Calculating</span>
-          <div style="font-size: 2.25rem; font-weight: 800; color: var(--primary); line-height: 1.1; margin-top: 0.25rem;" id="reportReadiness">0%</div>
-          <span style="font-size: 0.8rem; color: var(--slate-500); font-weight: 600;">Overall Match Score</span>
+          <div style="font-size: 2.5rem; font-weight: 900; color: #38bdf8; line-height: 1.1; margin-top: 0.25rem;" id="reportReadiness">0%</div>
+          <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">Overall Match Score</span>
         </div>
       </div>
 
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--slate-200);">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--border-subtle);">
         <div>
-          <span style="font-size: 0.8rem; color: var(--slate-500);">Total Required Skills</span>
-          <div id="reportTotalSkills" style="font-size: 1.35rem; font-weight: 800; color: var(--dark-900);">0</div>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Total Required Skills</span>
+          <div id="reportTotalSkills" style="font-size: 1.5rem; font-weight: 800; color: var(--text-primary);">0</div>
         </div>
         <div>
-          <span style="font-size: 0.8rem; color: var(--slate-500);">Proficiency Benchmarks Met</span>
-          <div id="reportMetSkills" style="font-size: 1.35rem; font-weight: 800; color: var(--success);">0</div>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Proficiency Benchmarks Met</span>
+          <div id="reportMetSkills" style="font-size: 1.5rem; font-weight: 800; color: #34d399;">0</div>
         </div>
         <div>
-          <span style="font-size: 0.8rem; color: var(--slate-500);">Skills with Identified Gap</span>
-          <div id="reportGapSkills" style="font-size: 1.35rem; font-weight: 800; color: var(--warning);">0</div>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Skills with Identified Gap</span>
+          <div id="reportGapSkills" style="font-size: 1.5rem; font-weight: 800; color: #fbbf24;">0</div>
         </div>
         <div>
-          <span style="font-size: 0.8rem; color: var(--slate-500);">Critical Attention Required</span>
-          <div id="reportCriticalGaps" style="font-size: 1.35rem; font-weight: 800; color: var(--danger);">0</div>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Critical Gaps (Deficit &ge; 2)</span>
+          <div id="reportCriticalGaps" style="font-size: 1.5rem; font-weight: 800; color: #f87171;">0</div>
+        </div>
+        <div>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Readiness Classification</span>
+          <div id="reportReadinessLevel" style="font-size: 1.15rem; font-weight: 800; color: #c084fc; margin-top: 0.25rem;">Assessing</div>
         </div>
       </div>
     </div>
@@ -100,7 +109,7 @@
       <!-- Radar Chart -->
       <div class="chart-card">
         <div class="card-header">
-          <h3 class="card-title"><i class="fas fa-spider" style="color: var(--primary);"></i> Competency Radar Matrix</h3>
+          <h3 class="card-title"><i class="fas fa-spider" style="color: #38bdf8;"></i> Competency Radar Matrix</h3>
         </div>
         <div class="chart-wrapper">
           <canvas id="radarChartCanvas"></canvas>
@@ -110,7 +119,7 @@
       <!-- Bar Comparison Chart -->
       <div class="chart-card">
         <div class="card-header">
-          <h3 class="card-title"><i class="fas fa-chart-bar" style="color: var(--secondary);"></i> Benchmark vs Current Level</h3>
+          <h3 class="card-title"><i class="fas fa-chart-bar" style="color: #c084fc;"></i> Benchmark vs Current Level</h3>
         </div>
         <div class="chart-wrapper">
           <canvas id="barChartCanvas"></canvas>
@@ -120,15 +129,15 @@
 
     <!-- Detailed Skill Gap Matrix Table -->
     <div class="table-card">
-      <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--slate-200); display: flex; justify-content: space-between; align-items: center;">
-        <h3 class="card-title"><i class="fas fa-table" style="color: var(--dark-800);"></i> Detailed Skill Gap Breakdown</h3>
-        <span style="font-size: 0.85rem; color: var(--slate-500);">1 = Novice &bull; 5 = Expert</span>
+      <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center;">
+        <h3 class="card-title"><i class="fas fa-table" style="color: #38bdf8;"></i> Detailed Skill Gap Breakdown</h3>
+        <span style="font-size: 0.85rem; color: var(--text-muted);">1 = Novice &bull; 5 = Expert</span>
       </div>
       <div class="table-responsive">
         <table class="gap-table">
           <thead>
             <tr>
-              <th>Skill & Category</th>
+              <th>Skill &amp; Category</th>
               <th>Priority</th>
               <th>Required Level</th>
               <th>Your Level</th>
@@ -144,9 +153,23 @@
     </div>
   </main>
 
+  <!-- Footer -->
   <footer class="footer">
-    <p>Skill Gap Analyzer &copy; 2026. Interactive Statistical Gap Visualization Engine.</p>
+    <div style="max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+      <p style="color: var(--text-primary); font-weight: 600;">
+        Skill Gap Analyzer &copy; 2026 &bull; Interactive Statistical Gap Visualization Engine
+      </p>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="assessment.html">Assessment</a>
+        <a href="analysis.html">Analysis</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="recommendations.html">Roadmaps</a>
+      </div>
+    </div>
   </footer>
+
+  <div id="toastContainer"></div>
 
   <script src="assets/js/api.js"></script>
   <script src="assets/js/analysis.js"></script>

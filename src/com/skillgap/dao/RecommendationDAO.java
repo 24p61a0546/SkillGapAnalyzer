@@ -2,6 +2,7 @@ package com.skillgap.dao;
 
 import com.skillgap.model.Recommendation;
 import com.skillgap.util.DBConnection;
+import com.skillgap.util.DemoCatalog;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -27,6 +28,12 @@ public class RecommendationDAO {
                     list.add(mapRecommendation(rs));
                 }
             }
+        } catch (Exception e) {
+            System.err.println("[RecommendationDAO] getRecommendationsBySkillId fallback: " + e.getMessage());
+        }
+
+        if (list.isEmpty()) {
+            list = DemoCatalog.getRecommendationsBySkillId(skillId);
         }
         return list;
     }
@@ -60,6 +67,12 @@ public class RecommendationDAO {
                     list.add(mapRecommendation(rs));
                 }
             }
+        } catch (Exception e) {
+            System.err.println("[RecommendationDAO] getRecommendationsForSkillList fallback: " + e.getMessage());
+        }
+
+        if (list.isEmpty()) {
+            list = DemoCatalog.getRecommendationsForSkillList(skillIds);
         }
         return list;
     }

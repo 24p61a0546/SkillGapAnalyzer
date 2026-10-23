@@ -19,49 +19,7 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-    <!-- 2. Authentication Filter for Protected Routes -->
-    <filter>
-        <filter-name>AuthenticationFilter</filter-name>
-        <filter-class>com.skillgap.filter.AuthenticationFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>AuthenticationFilter</filter-name>
-        <url-pattern>/dashboard.html</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>AuthenticationFilter</filter-name>
-        <url-pattern>/assessment.html</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>AuthenticationFilter</filter-name>
-        <url-pattern>/roles.html</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>AuthenticationFilter</filter-name>
-        <url-pattern>/analysis.html</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>AuthenticationFilter</filter-name>
-        <url-pattern>/recommendations.html</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>AuthenticationFilter</filter-name>
-        <url-pattern>/api/dashboard</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>AuthenticationFilter</filter-name>
-        <url-pattern>/api/assessment/*</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>AuthenticationFilter</filter-name>
-        <url-pattern>/api/analysis</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>AuthenticationFilter</filter-name>
-        <url-pattern>/api/recommendations</url-pattern>
-    </filter-mapping>
-
-    <!-- 3. Servlet Declarations -->
+    <!-- 2. Servlet Declarations -->
     <servlet>
         <servlet-name>AuthServlet</servlet-name>
         <servlet-class>com.skillgap.controller.AuthServlet</servlet-class>
@@ -116,7 +74,7 @@
         <url-pattern>/api/recommendations</url-pattern>
     </servlet-mapping>
 
-    <!-- 4. Session Configuration (4 hours) -->
+    <!-- 3. Session Configuration (4 hours) -->
     <session-config>
         <session-timeout>240</session-timeout>
         <cookie-config>
@@ -125,7 +83,7 @@
         </cookie-config>
     </session-config>
 
-    <!-- 5. Default Welcome File -->
+    <!-- 4. Default Welcome File -->
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>

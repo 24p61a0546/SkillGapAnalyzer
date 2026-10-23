@@ -47,35 +47,35 @@ function renderRoles(roles, currentTargetId) {
     const skillsPreview = (role.requiredSkills || []).slice(0, 4);
 
     return `
-      <div class="card" style="display: flex; flex-direction: column; justify-content: space-between; position: relative; border-color: ${isCurrent ? 'var(--primary)' : 'var(--slate-200)'};">
+      <div class="card" style="display: flex; flex-direction: column; justify-content: space-between; position: relative; border-color: ${isCurrent ? '#38bdf8' : 'var(--border-subtle)'}; box-shadow: ${isCurrent ? '0 0 25px rgba(56, 189, 248, 0.25)' : 'var(--shadow-sm)'};">
         ${isCurrent ? `
-          <div style="position: absolute; top: -10px; right: 20px; background: var(--primary); color: white; padding: 0.2rem 0.75rem; border-radius: var(--radius-full); font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">
+          <div style="position: absolute; top: -10px; right: 20px; background: var(--grad-primary); color: white; padding: 0.25rem 0.85rem; border-radius: var(--radius-full); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; box-shadow: 0 0 12px rgba(6, 182, 212, 0.5);">
             Active Target Role
           </div>
         ` : ''}
 
         <div>
           <div style="display: flex; align-items: center; gap: 0.85rem; margin-bottom: 1rem;">
-            <div style="width: 48px; height: 48px; border-radius: var(--radius-md); background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.35rem;">
+            <div style="width: 48px; height: 48px; border-radius: var(--radius-md); background: rgba(99, 102, 241, 0.15); border: 1px solid rgba(99, 102, 241, 0.35); color: #38bdf8; display: flex; align-items: center; justify-content: center; font-size: 1.35rem;">
               <i class="${role.icon || 'fas fa-briefcase'}"></i>
             </div>
             <div>
-              <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--dark-900);">${role.title}</h3>
+              <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--text-primary);">${role.title}</h3>
               <span class="badge badge-primary">${role.category}</span>
             </div>
           </div>
 
-          <p style="color: var(--slate-600); font-size: 0.9rem; line-height: 1.5; margin-bottom: 1.25rem;">
+          <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.25rem;">
             ${role.description}
           </p>
 
-          <div style="background: var(--slate-50); border: 1px solid var(--slate-200); border-radius: var(--radius-md); padding: 0.75rem 1rem; margin-bottom: 1.25rem; font-size: 0.85rem; display: flex; justify-content: space-between;">
-            <div><strong>Avg. Salary:</strong> ${role.avgSalary || '$90,000+'}</div>
-            <div><strong>Demand:</strong> <span style="color: var(--success); font-weight: 600;">${role.demandLevel || 'High'}</span></div>
+          <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 0.75rem 1rem; margin-bottom: 1.25rem; font-size: 0.85rem; display: flex; justify-content: space-between; color: var(--text-secondary);">
+            <div><strong style="color: var(--text-primary);">Avg. Salary:</strong> <span style="color: #38bdf8;">${role.avgSalary || '$90,000+'}</span></div>
+            <div><strong style="color: var(--text-primary);">Demand:</strong> <span style="color: #34d399; font-weight: 700;">${role.demandLevel || 'High'}</span></div>
           </div>
 
           <div style="margin-bottom: 1.5rem;">
-            <div style="font-size: 0.8rem; font-weight: 700; color: var(--slate-500); text-transform: uppercase; margin-bottom: 0.5rem;">Key Benchmark Skills:</div>
+            <div style="font-size: 0.8rem; font-weight: 700; color: #38bdf8; text-transform: uppercase; margin-bottom: 0.5rem; letter-spacing: 0.05em;">Key Benchmark Skills:</div>
             <div style="display: flex; flex-wrap: wrap; gap: 0.4rem;">
               ${skillsPreview.map(s => `
                 <span class="badge" style="background: var(--slate-100); color: var(--slate-700); font-size: 0.75rem;">
@@ -112,11 +112,20 @@ function renderRoles(roles, currentTargetId) {
 
 window.selectTargetRole = async function(roleId, roleTitle) {
   try {
+    const saved = sessionStorage.getItem('skillgap_user');
+    if (saved) {
+      try {
+        const u = JSON.parse(saved);
+        u.targetRoleId = roleId;
+        u.targetRoleTitle = roleTitle;
+        sessionStorage.setItem('skillgap_user', JSON.stringify(u));
+      } catch (e) {}
+    }
     await API.post('/api/roles/select', { roleId });
     API.showToast(`Target role successfully changed to ${roleTitle}!`, 'success');
     setTimeout(() => {
       window.location.reload();
-    }, 800);
+    }, 600);
   } catch (err) {
     API.showToast(err.message || 'Failed to update target role.', 'error');
   }

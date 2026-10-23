@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Learning Roadmaps & Recommendations | Skill Gap Analyzer</title>
+  <title>Learning Roadmaps &amp; Recommendations | Skill Gap Analyzer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="assets/css/global.css">
   <link rel="stylesheet" href="assets/css/analysis.css">
@@ -16,35 +16,40 @@
   <!-- Navigation Bar -->
   <nav class="navbar">
     <div class="nav-container">
-      <a href="dashboard.html" class="brand-logo">
-        <div class="brand-icon"><i class="fas fa-chart-line"></i></div>
-        <span>SkillGap<span style="color: var(--primary);">Analyzer</span></span>
+      <a href="index.html" class="nav-brand">
+        <div class="brand-logo-icon"><i class="fas fa-microchip"></i></div>
+        <span>SkillGap<span class="gradient-text">Analyzer</span></span>
       </a>
 
       <ul class="nav-links">
-        <li><a href="dashboard.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+        <li><a href="index.html" class="nav-link"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="assessment.html" class="nav-link"><i class="fas fa-tasks"></i> Skill Assessment</a></li>
+        <li><a href="analysis.html" class="nav-link"><i class="fas fa-chart-pie"></i> Gap Analysis</a></li>
+        <li><a href="dashboard.html" class="nav-link"><i class="fas fa-columns"></i> Dashboard</a></li>
+        <li><a href="recommendations.html" class="nav-link active"><i class="fas fa-map-signs"></i> Roadmaps</a></li>
         <li><a href="roles.html" class="nav-link"><i class="fas fa-briefcase"></i> Job Roles</a></li>
-        <li><a href="assessment.html" class="nav-link"><i class="fas fa-tasks"></i> Assessment</a></li>
-        <li><a href="analysis.html" class="nav-link"><i class="fas fa-radar"></i> Gap Analysis</a></li>
-        <li><a href="recommendations.html" class="nav-link active"><i class="fas fa-graduation-cap"></i> Roadmaps</a></li>
       </ul>
 
-      <div class="nav-auth">
-        <a href="analysis.html" class="btn btn-outline btn-sm"><i class="fas fa-chart-pie"></i> Gap Report</a>
-        <button onclick="API.logout()" class="btn btn-secondary btn-sm"><i class="fas fa-sign-out-alt"></i></button>
+      <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <a href="analysis.html" class="btn btn-primary btn-sm"><i class="fas fa-chart-pie"></i> Gap Report</a>
+        <a href="index.html" class="btn btn-secondary btn-sm" title="Start New Analysis"><i class="fas fa-redo"></i> Reset</a>
       </div>
     </div>
   </nav>
 
-  <!-- Main Content -->
-  <main class="main-content">
+  <!-- Main Container -->
+  <main class="container">
     <div class="page-header">
       <div>
-        <h1 class="page-title">Personalized Learning Roadmap</h1>
-        <p class="page-subtitle">Curated high-quality free courses, official documentations, and projects tailored to close your specific gaps.</p>
+        <h1 class="page-title">
+          Personalized <span class="gradient-text">Learning Roadmaps</span>
+        </h1>
+        <p class="page-subtitle">
+          Curated high-impact free courses, official documentation, and real-world projects tailored to close your specific gaps.
+        </p>
       </div>
       <div>
-        <a href="recommendations.html" class="btn btn-secondary btn-sm"><i class="fas fa-sync-alt"></i> View All Recommendations</a>
+        <a href="recommendations.html" class="btn btn-secondary btn-sm"><i class="fas fa-sync-alt"></i> View All Resources</a>
       </div>
     </div>
 
@@ -54,9 +59,23 @@
     </div>
   </main>
 
+  <!-- Footer -->
   <footer class="footer">
-    <p>Skill Gap Analyzer &copy; 2026. Student Placement Readiness & Upskilling Roadmap.</p>
+    <div style="max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+      <p style="color: var(--text-primary); font-weight: 600;">
+        Skill Gap Analyzer &copy; 2026 &bull; Student Placement Readiness &amp; Upskilling Roadmap
+      </p>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="assessment.html">Assessment</a>
+        <a href="analysis.html">Analysis</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="recommendations.html">Roadmaps</a>
+      </div>
+    </div>
   </footer>
+
+  <div id="toastContainer"></div>
 
   <script src="assets/js/api.js"></script>
   <script src="assets/js/recommendations.js"></script>

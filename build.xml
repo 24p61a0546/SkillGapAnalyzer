@@ -91,7 +91,8 @@
         
         <echo message="[Ant] Deploying ${war.file} to ${tomcat.webapps}..."/>
         <copy file="${war.file}" todir="${tomcat.webapps}" overwrite="true"/>
-        <echo message="[Ant] Deployed successfully. Access via http://localhost:8080/${app.name}/"/>
+        <copy file="${war.file}" tofile="${tomcat.webapps}/ROOT.war" overwrite="true"/>
+        <echo message="[Ant] Deployed successfully. Access via http://localhost:8080/${app.name}/ or http://localhost:8080/"/>
     </target>
 
 </project>

@@ -6,7 +6,7 @@
   <title>Skill Assessment | Skill Gap Analyzer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="assets/css/global.css">
   <link rel="stylesheet" href="assets/css/assessment.css">
@@ -16,47 +16,75 @@
   <!-- Navigation Bar -->
   <nav class="navbar">
     <div class="nav-container">
-      <a href="dashboard.html" class="brand-logo">
-        <div class="brand-icon"><i class="fas fa-chart-line"></i></div>
-        <span>SkillGap<span style="color: var(--primary);">Analyzer</span></span>
+      <a href="index.html" class="nav-brand">
+        <div class="brand-logo-icon"><i class="fas fa-microchip"></i></div>
+        <span>SkillGap<span class="gradient-text">Analyzer</span></span>
       </a>
 
       <ul class="nav-links">
-        <li><a href="dashboard.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+        <li><a href="index.html" class="nav-link"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="assessment.html" class="nav-link active"><i class="fas fa-tasks"></i> Skill Assessment</a></li>
+        <li><a href="analysis.html" class="nav-link"><i class="fas fa-chart-pie"></i> Gap Analysis</a></li>
+        <li><a href="dashboard.html" class="nav-link"><i class="fas fa-columns"></i> Dashboard</a></li>
+        <li><a href="recommendations.html" class="nav-link"><i class="fas fa-map-signs"></i> Roadmaps</a></li>
         <li><a href="roles.html" class="nav-link"><i class="fas fa-briefcase"></i> Job Roles</a></li>
-        <li><a href="assessment.html" class="nav-link active"><i class="fas fa-tasks"></i> Assessment</a></li>
-        <li><a href="analysis.html" class="nav-link"><i class="fas fa-radar"></i> Gap Analysis</a></li>
-        <li><a href="recommendations.html" class="nav-link"><i class="fas fa-graduation-cap"></i> Roadmaps</a></li>
       </ul>
 
-      <div class="nav-auth">
-        <a href="dashboard.html" class="btn btn-secondary btn-sm"><i class="fas fa-tachometer-alt"></i> Portal</a>
-        <button onclick="API.logout()" class="btn btn-secondary btn-sm"><i class="fas fa-sign-out-alt"></i></button>
+      <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <span id="navUserName" class="badge badge-primary" style="font-size: 0.85rem; padding: 0.45rem 0.9rem;">
+          <i class="fas fa-user-astronaut"></i> Student Analyst
+        </span>
+        <a href="index.html" class="btn btn-secondary btn-sm" title="Start New Analysis">
+          <i class="fas fa-redo"></i> Reset
+        </a>
       </div>
     </div>
   </nav>
 
-  <!-- Main Content -->
-  <main class="main-content">
-    <div class="page-header">
+  <!-- Main Container -->
+  <main class="container">
+
+    <!-- Header Banner -->
+    <div class="assessment-hero-card">
       <div>
-        <h1 class="page-title">Technical Skill Self-Assessment</h1>
-        <p class="page-subtitle">Rate your genuine proficiency levels from 1 (Novice) to 5 (Expert) across the technical matrix.</p>
+        <div class="badge badge-primary" style="margin-bottom: 0.5rem;">
+          <i class="fas fa-sliders-h"></i> Interactive Competency Rubric
+        </div>
+        <h1 class="page-title" style="margin-bottom: 0.35rem;">
+          Self-Evaluate Your <span class="gradient-text">Technical Skills</span>
+        </h1>
+        <p class="page-subtitle" style="margin-top: 0;">
+          Rate your current proficiency (0 - None to 5 - Expert) to calculate missing capabilities against your target role.
+        </p>
       </div>
-      <a href="roles.html" class="btn btn-outline btn-sm"><i class="fas fa-bullseye"></i> View Target Benchmarks</a>
+
+      <!-- Target Role Selector -->
+      <div style="display: flex; align-items: center; gap: 0.75rem; background: rgba(15, 23, 42, 0.8); padding: 0.65rem 1.25rem; border: 1px solid var(--border-medium); border-radius: var(--radius-md); box-shadow: var(--shadow-sm);">
+        <label for="targetRoleSelect" style="font-size: 0.85rem; font-weight: 700; color: #38bdf8; white-space: nowrap;">
+          <i class="fas fa-bullseye"></i> Target Goal:
+        </label>
+        <select id="targetRoleSelect" class="form-select" style="padding: 0.35rem 0.75rem; font-size: 0.9rem; border: none; font-weight: 600; color: #38bdf8; cursor: pointer; background: transparent;">
+          <option value="1">Full Stack Java Developer</option>
+          <option value="2">Backend Java Engineer</option>
+          <option value="3">Data Scientist / AI Engineer</option>
+          <option value="4">DevOps & Cloud Engineer</option>
+          <option value="5">Cybersecurity Analyst</option>
+        </select>
+      </div>
     </div>
 
     <!-- Rating Rubric Legend Box -->
-    <div class="card" style="margin-bottom: 2rem; background: var(--slate-50); border-left: 4px solid var(--primary);">
-      <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--dark-900);">
-        <i class="fas fa-info-circle" style="color: var(--primary);"></i> Proficiency Scoring Rubric
+    <div class="card" style="margin-bottom: 2rem; border-left: 4px solid #38bdf8;">
+      <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.75rem; color: var(--text-primary); display: flex; align-items: center; gap: 0.5rem;">
+        <i class="fas fa-info-circle" style="color: #38bdf8;"></i> Proficiency Scoring Rubric
       </h4>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem; font-size: 0.85rem; color: var(--slate-600);">
-        <div><strong>1 - Novice:</strong> Theoretical awareness, no hands-on project yet.</div>
-        <div><strong>2 - Beginner:</strong> Can write simple code with documentation/tutorials.</div>
-        <div><strong>3 - Competent:</strong> Can independently build features and solve common bugs.</div>
-        <div><strong>4 - Proficient:</strong> Thorough understanding of best practices, architectures & internals.</div>
-        <div><strong>5 - Expert:</strong> Can optimize systems, lead architectural decisions and mentor others.</div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.85rem; font-size: 0.85rem; color: var(--text-muted);">
+        <div><strong style="color: #f8fafc;">0 - None:</strong> Not learned or never used before.</div>
+        <div><strong style="color: #f8fafc;">1 - Novice:</strong> Theoretical awareness, no project yet.</div>
+        <div><strong style="color: #f8fafc;">2 - Beginner:</strong> Can write simple code with tutorials.</div>
+        <div><strong style="color: #f8fafc;">3 - Competent:</strong> Can build features independently.</div>
+        <div><strong style="color: #f8fafc;">4 - Proficient:</strong> Strong architectural grasp & best practices.</div>
+        <div><strong style="color: #f8fafc;">5 - Expert:</strong> Can optimize, mentor, and design systems.</div>
       </div>
     </div>
 
@@ -70,21 +98,40 @@
       <!-- Injected by assessment.js -->
     </div>
 
-    <!-- Sticky Bottom Submit Bar -->
+    <!-- Sticky Bottom Submit Dock -->
     <div class="submit-assessment-bar">
       <div>
-        <strong id="ratedCount" style="font-size: 1rem; color: var(--dark-900);">0 Skills Rated</strong>
-        <p style="font-size: 0.85rem; color: var(--slate-500);">Your ratings will update your mathematical role readiness score immediately.</p>
+        <strong id="ratedCount" style="font-size: 1.05rem; color: var(--text-primary); display: block;">
+          0 Active Skills Rated (Proficiency &gt; 0)
+        </strong>
+        <p id="targetGoalSummary" style="font-size: 0.85rem; color: #38bdf8; margin-top: 0.2rem;">
+          Targeting: Full Stack Java Developer
+        </p>
       </div>
       <button id="submitAssessmentBtn" class="btn btn-primary btn-lg">
-        <i class="fas fa-chart-line"></i> Save & View Gap Analysis
+        <i class="fas fa-chart-pie"></i> Calculate Skill Gap &amp; View Dashboard
       </button>
     </div>
+
   </main>
 
+  <!-- Footer -->
   <footer class="footer">
-    <p>Skill Gap Analyzer &copy; 2026. Student Competency Evaluation Framework.</p>
+    <div style="max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+      <p style="color: var(--text-primary); font-weight: 600;">
+        Skill Gap Analyzer &copy; 2026 &bull; Student Competency Evaluation Framework
+      </p>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="assessment.html">Assessment</a>
+        <a href="analysis.html">Analysis</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="recommendations.html">Roadmaps</a>
+      </div>
+    </div>
   </footer>
+
+  <div id="toastContainer"></div>
 
   <script src="assets/js/api.js"></script>
   <script src="assets/js/assessment.js"></script>

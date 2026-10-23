@@ -15,12 +15,27 @@ public class GapAnalysisService {
     private final RecommendationDAO recommendationDAO = new RecommendationDAO();
 
     public GapAnalysisReport analyze(int userId, int roleId) throws SQLException {
+        return analyze(userId, roleId, null);
+    }
+
+    public GapAnalysisReport analyze(int userId, int roleId, Map<Integer, Integer> sessionRatings) throws SQLException {
         JobRole role = jobRoleDAO.getRoleById(roleId);
         if (role == null) {
             throw new IllegalArgumentException("Job role not found with id: " + roleId);
         }
 
-        Map<Integer, Integer> userRatings = assessmentDAO.getSkillProficiencyMap(userId);
+        Map<Integer, Integer> userRatings = new HashMap<>();
+        try {
+            userRatings = assessmentDAO.getSkillProficiencyMap(userId);
+        } catch (Exception e) {
+            System.err.println("[GapAnalysisService] Notice: Could not read ratings from DB: " + e.getMessage());
+        }
+
+        if (sessionRatings != null) {
+            for (Map.Entry<Integer, Integer> entry : sessionRatings.entrySet()) {
+                userRatings.put(entry.getKey(), entry.getValue());
+            }
+        }
         List<RoleSkill> requiredSkills = role.getRequiredSkills();
 
         GapAnalysisReport report = new GapAnalysisReport();
