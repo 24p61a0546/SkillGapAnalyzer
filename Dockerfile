@@ -44,4 +44,5 @@ COPY --from=builder /app/dist/SkillGapAnalyzer.war /usr/local/tomcat/webapps/ROO
 
 EXPOSE 8080
 
-CMD ["catalina.sh", "run"]
+# Dynamically listen on cloud provider's $PORT (e.g. Render, Railway, Cloud Run) or fallback to 8080
+CMD ["sh", "-c", "if [ -n \"$PORT\" ]; then sed -i \"s/port=\\\"8080\\\"/port=\\\"$PORT\\\"/g\" /usr/local/tomcat/conf/server.xml; fi && catalina.sh run"]
