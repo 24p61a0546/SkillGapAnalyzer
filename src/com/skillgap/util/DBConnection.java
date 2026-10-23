@@ -150,20 +150,49 @@ public class DBConnection {
         // Password resolution (Supports blank passwords accurately)
         password = resolvePassword(props);
 
-        // Direct JDBC URL resolution (Supports cloud provider connection strings e.g. DATABASE_URL / DB_URL)
+        // Direct JDBC URL or URI resolution (Supports mysql://user:pass@host:port/db or jdbc:mysql://...)
         String directUrl = resolveValue(
-                new String[]{"db.url", "jdbc.url"},
-                new String[]{"DB_URL", "JDBC_DATABASE_URL", "DATABASE_URL"},
+                new String[]{"db.url", "jdbc.url", "DB_URL", "DATABASE_URL"},
+                new String[]{"DB_URL", "JDBC_DATABASE_URL", "DATABASE_URL", "MYSQL_URL"},
                 props,
                 new String[]{"db.url", "jdbc.url", "url"},
                 null
         );
 
         if (directUrl != null && !directUrl.trim().isEmpty()) {
-            if (!directUrl.startsWith("jdbc:")) {
-                directUrl = "jdbc:" + directUrl;
+            directUrl = directUrl.trim();
+            // Handle standard cloud URI: mysql://user:pass@host:port/dbname
+            if (directUrl.contains("@") && (directUrl.startsWith("mysql://") || directUrl.startsWith("jdbc:mysql://"))) {
+                try {
+                    String cleanUri = directUrl.startsWith("jdbc:") ? directUrl.substring(5) : directUrl;
+                    java.net.URI uri = new java.net.URI(cleanUri);
+                    if (uri.getUserInfo() != null) {
+                        String[] userInfo = uri.getUserInfo().split(":", 2);
+                        if (userInfo.length > 0 && !userInfo[0].isEmpty()) {
+                            username = java.net.URLDecoder.decode(userInfo[0], "UTF-8");
+                        }
+                        if (userInfo.length > 1) {
+                            password = java.net.URLDecoder.decode(userInfo[1], "UTF-8");
+                        }
+                    }
+                    if (uri.getHost() != null) {
+                        host = uri.getHost();
+                    }
+                    if (uri.getPort() > 0) {
+                        port = String.valueOf(uri.getPort());
+                    }
+                    if (uri.getPath() != null && uri.getPath().length() > 1) {
+                        dbName = uri.getPath().substring(1);
+                    }
+                    url = "jdbc:mysql://" + host + ":" + port + "/" + dbName
+                            + "?useSSL=true&trustServerCertificate=true&allowPublicKeyRetrieval=true&serverTimezone=UTC&characterEncoding=UTF-8&connectTimeout=10000";
+                } catch (Exception e) {
+                    System.err.println("[DBConnection] Could not parse URI connection string: " + e.getMessage() + ". Using as raw JDBC URL.");
+                    url = directUrl.startsWith("jdbc:") ? directUrl : ("jdbc:" + directUrl);
+                }
+            } else {
+                url = directUrl.startsWith("jdbc:") ? directUrl : ("jdbc:" + directUrl);
             }
-            url = directUrl;
         } else {
             String sslSetting = resolveValue(
                     new String[]{"db.ssl"},
@@ -174,8 +203,13 @@ public class DBConnection {
             );
             boolean useSSL = "true".equalsIgnoreCase(sslSetting) || "required".equalsIgnoreCase(sslSetting);
 
-            url = "jdbc:mysql://" + host + ":" + port + "/" + dbName
-                    + "?useSSL=" + useSSL + "&allowPublicKeyRetrieval=true&serverTimezone=UTC&characterEncoding=UTF-8&connectTimeout=5000";
+            if (useSSL) {
+                url = "jdbc:mysql://" + host + ":" + port + "/" + dbName
+                        + "?useSSL=true&trustServerCertificate=true&allowPublicKeyRetrieval=true&serverTimezone=UTC&characterEncoding=UTF-8&connectTimeout=10000";
+            } else {
+                url = "jdbc:mysql://" + host + ":" + port + "/" + dbName
+                        + "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&characterEncoding=UTF-8&connectTimeout=10000";
+            }
         }
 
         lastLoadTime = System.currentTimeMillis();
