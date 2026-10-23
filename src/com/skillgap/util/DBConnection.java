@@ -29,10 +29,23 @@ public class DBConnection {
     private static boolean driverLoaded = false;
     private static long lastLoadTime = 0;
     private static final long RELOAD_INTERVAL_MS = 10000; // allow re-checking external config if needed
+    private static boolean productionMissingConfig = false;
+    private static String productionErrorMessage = "";
 
     static {
         loadDriver();
         loadConfiguration();
+    }
+
+    /**
+     * Determines whether the application is running in a cloud/production environment (e.g. Render).
+     */
+    public static boolean isProductionEnvironment() {
+        return "true".equalsIgnoreCase(System.getenv("RENDER"))
+                || System.getenv("RENDER_SERVICE_ID") != null
+                || "production".equalsIgnoreCase(System.getenv("ENVIRONMENT"))
+                || "production".equalsIgnoreCase(System.getenv("APP_ENV"))
+                || "production".equalsIgnoreCase(System.getProperty("app.env"));
     }
 
     private static void loadDriver() {
@@ -111,19 +124,32 @@ public class DBConnection {
             }
         }
 
-        // Host resolution (System Property > Env Var > Properties File > Default)
+        boolean isProd = isProductionEnvironment();
+        productionMissingConfig = false;
+        productionErrorMessage = "";
+
+        // 1. Check for Unified Database URL (e.g. DATABASE_URL, DB_URL, MYSQL_URL)
+        String directUrl = resolveValue(
+                new String[]{"db.url", "jdbc.url", "DB_URL", "DATABASE_URL"},
+                new String[]{"DATABASE_URL", "DB_URL", "MYSQL_URL", "JDBC_DATABASE_URL", "JAWSDB_URL", "CLEARDB_DATABASE_URL"},
+                props,
+                new String[]{"db.url", "jdbc.url", "url"},
+                null
+        );
+
+        // 2. Component resolution (checks System properties, Environment variables, and properties files)
         String host = resolveValue(
-                new String[]{"db.host", "mysql.host"},
-                new String[]{"DB_HOST", "MYSQL_HOST"},
+                new String[]{"db.host", "mysql.host", "DB_HOST", "MYSQL_HOST", "DATABASE_HOST"},
+                new String[]{"DB_HOST", "MYSQL_HOST", "MYSQLHOST", "DATABASE_HOST", "DB_HOSTNAME"},
                 props,
                 new String[]{"db.host", "mysql.host", "host"},
-                "localhost"
+                isProd ? null : "localhost"
         );
 
         // Port resolution
         String port = resolveValue(
-                new String[]{"db.port", "mysql.port"},
-                new String[]{"DB_PORT", "MYSQL_PORT"},
+                new String[]{"db.port", "mysql.port", "DB_PORT", "MYSQL_PORT"},
+                new String[]{"DB_PORT", "MYSQL_PORT", "MYSQLPORT", "DATABASE_PORT"},
                 props,
                 new String[]{"db.port", "mysql.port", "port"},
                 "3306"
@@ -131,33 +157,41 @@ public class DBConnection {
 
         // Database name resolution
         String dbName = resolveValue(
-                new String[]{"db.name", "db.database", "mysql.database"},
-                new String[]{"DB_NAME", "DB_DATABASE", "MYSQL_DATABASE"},
+                new String[]{"db.name", "db.database", "mysql.database", "DB_NAME", "DATABASE_NAME"},
+                new String[]{"DB_NAME", "DB_DATABASE", "MYSQL_DATABASE", "MYSQLDATABASE", "DATABASE_NAME"},
                 props,
                 new String[]{"db.name", "db.database", "database"},
-                "skill_gap_db"
+                isProd ? "defaultdb" : "skill_gap_db"
         );
 
         // Username resolution
         username = resolveValue(
-                new String[]{"db.user", "db.username", "mysql.user"},
-                new String[]{"DB_USER", "DB_USERNAME", "MYSQL_USER"},
+                new String[]{"db.user", "db.username", "mysql.user", "DB_USER", "DATABASE_USER"},
+                new String[]{"DB_USER", "DB_USERNAME", "MYSQL_USER", "MYSQLUSER", "DATABASE_USER"},
                 props,
                 new String[]{"db.user", "db.username", "username", "user"},
-                "root"
+                isProd ? null : "root"
         );
 
         // Password resolution (Supports blank passwords accurately)
         password = resolvePassword(props);
 
-        // Direct JDBC URL or URI resolution (Supports mysql://user:pass@host:port/db or jdbc:mysql://...)
-        String directUrl = resolveValue(
-                new String[]{"db.url", "jdbc.url", "DB_URL", "DATABASE_URL"},
-                new String[]{"DB_URL", "JDBC_DATABASE_URL", "DATABASE_URL", "MYSQL_URL"},
-                props,
-                new String[]{"db.url", "jdbc.url", "url"},
-                null
-        );
+        // STRICT PRODUCTION CHECK: Never fall back to localhost in production
+        if (isProd && (directUrl == null || directUrl.trim().isEmpty()) && (host == null || "localhost".equalsIgnoreCase(host) || "127.0.0.1".equals(host))) {
+            productionMissingConfig = true;
+            productionErrorMessage = "Production Database Configuration Error: Running in production on Render, but no remote database environment variables were found. "
+                    + "Fallback to localhost is disabled in production because no MySQL daemon runs inside the container. "
+                    + "Please configure your remote database environment variables in Render Dashboard under 'Environment': "
+                    + "DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASS, and DB_SSL (or provide DATABASE_URL).";
+
+            System.err.println("================================================================================");
+            System.err.println("[DBConnection] " + productionErrorMessage);
+            System.err.println("================================================================================");
+            configSource = "missing production environment variables";
+            url = "jdbc:mysql://MISSING_PRODUCTION_DB_HOST:3306/UNCONFIGURED";
+            lastLoadTime = System.currentTimeMillis();
+            return;
+        }
 
         if (directUrl != null && !directUrl.trim().isEmpty()) {
             directUrl = directUrl.trim();
@@ -186,20 +220,23 @@ public class DBConnection {
                     }
                     url = "jdbc:mysql://" + host + ":" + port + "/" + dbName
                             + "?useSSL=true&trustServerCertificate=true&allowPublicKeyRetrieval=true&serverTimezone=UTC&characterEncoding=UTF-8&connectTimeout=10000";
+                    configSource = "environment variable (DATABASE_URL)";
                 } catch (Exception e) {
                     System.err.println("[DBConnection] Could not parse URI connection string: " + e.getMessage() + ". Using as raw JDBC URL.");
                     url = directUrl.startsWith("jdbc:") ? directUrl : ("jdbc:" + directUrl);
+                    configSource = "environment variable (raw JDBC URL)";
                 }
             } else {
                 url = directUrl.startsWith("jdbc:") ? directUrl : ("jdbc:" + directUrl);
+                configSource = "environment variable (raw JDBC URL)";
             }
         } else {
             String sslSetting = resolveValue(
                     new String[]{"db.ssl"},
-                    new String[]{"DB_SSL", "MYSQL_SSL"},
+                    new String[]{"DB_SSL", "MYSQL_SSL", "DATABASE_SSL"},
                     props,
                     new String[]{"db.ssl", "ssl"},
-                    "false"
+                    isProd ? "true" : "false" // default to SSL in production for remote databases
             );
             boolean useSSL = "true".equalsIgnoreCase(sslSetting) || "required".equalsIgnoreCase(sslSetting);
 
@@ -209,6 +246,9 @@ public class DBConnection {
             } else {
                 url = "jdbc:mysql://" + host + ":" + port + "/" + dbName
                         + "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&characterEncoding=UTF-8&connectTimeout=10000";
+            }
+            if (isProd) {
+                configSource = "environment variables (" + host + ")";
             }
         }
 
@@ -255,7 +295,7 @@ public class DBConnection {
      */
     private static String resolvePassword(Properties props) {
         // 1. System Property: -Ddb.pass=... or -Ddb.password=...
-        String[] sysKeys = new String[]{"db.pass", "db.password", "mysql.password", "mysql.pass"};
+        String[] sysKeys = new String[]{"db.pass", "db.password", "mysql.password", "mysql.pass", "DB_PASS", "DB_PASSWORD", "DATABASE_PASSWORD"};
         for (String k : sysKeys) {
             if (System.getProperties().containsKey(k)) {
                 return System.getProperty(k); // can be empty string
@@ -263,7 +303,7 @@ public class DBConnection {
         }
 
         // 2. Environment variables: DB_PASS, DB_PASSWORD, MYSQL_PWD, MYSQL_PASSWORD
-        String[] envKeys = new String[]{"DB_PASS", "DB_PASSWORD", "MYSQL_PWD", "MYSQL_PASSWORD"};
+        String[] envKeys = new String[]{"DB_PASS", "DB_PASSWORD", "MYSQL_PASSWORD", "MYSQL_PWD", "MYSQLPASSWORD", "DATABASE_PASSWORD"};
         for (String k : envKeys) {
             String val = System.getenv(k);
             if (val != null) {
@@ -280,8 +320,8 @@ public class DBConnection {
             }
         }
 
-        // 4. Default fallback if not defined anywhere
-        return "root";
+        // 4. Default fallback if not defined anywhere (never fallback to "root" in production)
+        return isProductionEnvironment() ? "" : "root";
     }
 
     /**
@@ -292,6 +332,11 @@ public class DBConnection {
     public static Connection getConnection() throws SQLException {
         if (!driverLoaded) {
             loadDriver();
+        }
+
+        // Fail fast in production if required environment variables are absent
+        if (productionMissingConfig) {
+            throw new SQLException(productionErrorMessage);
         }
 
         try {
